@@ -3,6 +3,7 @@ import fastify from "fastify"
 import fastifySwaggerUI from '@fastify/swagger-ui'
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import fastifyCors from "@fastify/cors"
+import { errorHandler } from "./http/error-handler"
 
 export function buildApp() {
     const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -11,7 +12,7 @@ export function buildApp() {
 
     app.setValidatorCompiler(validatorCompiler)
 
-    // TODO: handler de erros aqui
+    app.setErrorHandler(errorHandler)
 
     app.register(fastifySwagger, {
         openapi: {
