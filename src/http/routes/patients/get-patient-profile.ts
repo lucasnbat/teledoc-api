@@ -7,7 +7,7 @@ import { auth } from "../middlewares/auth";
 
 export async function getPatientProfile(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().register(auth).get(
-    '/user-profile',
+    '/patient-profile',
     {
       schema: {
         tags: ['pacientes'],

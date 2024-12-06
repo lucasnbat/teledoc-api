@@ -12,6 +12,7 @@ import { getDoctors } from "./http/routes/doctors/get-doctors"
 import { getDoctor } from "./http/routes/doctors/get-doctor"
 import { getPatientProfile } from "./http/routes/patients/get-patient-profile"
 import { requestPasswordRecover } from "./http/routes/patients/request-password-recover"
+import { resetPassword } from "./http/routes/patients/reset-password"
 
 export function buildApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -58,6 +59,7 @@ export function buildApp() {
   app.register(authenticateWithPassword)
   app.register(getPatientProfile)
   app.register(requestPasswordRecover)
+  app.register(resetPassword)
 
   // Médicos
   app.register(getDoctors)
