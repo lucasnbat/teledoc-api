@@ -39,9 +39,13 @@ export function buildApp() {
     },
   })
 
+  // Configurando a pasta de uploads que será servida no link retornado pela api:
+  const uploadsDir = join(__dirname, '/http/routes/doctors/uploads') 
+
+  // Configuração para servir os arquivos estáticos (imagens), gerar o link:
   app.register(fastifyStatic, {
-    root: join(__dirname, '../uploads'),
-    prefix: '/uploads/', // Todas as imagens estarão acessíveis em "/uploads/"
+    root: uploadsDir, 
+    prefix: '/uploads/', 
   })
 
   app.register(fastifySwagger, {

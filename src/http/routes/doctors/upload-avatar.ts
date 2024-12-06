@@ -5,17 +5,15 @@ import { auth } from '../middlewares/auth'
 import { join } from 'path'
 import { createWriteStream, mkdirSync, existsSync } from 'fs'
 import { z } from 'zod'
+import { InternalServerError } from '../_errors/internal-server-error'
 
 export const uploadAvatarSchema = {
   tags: ['médicos'],
   summary: 'Faz upload de uma foto de perfil para o médico',
   security: [{ bearerAuth: [] }],
-  consumes: ['multipart/form-data'],
+  consumes: ['multipart/form-data'], // Swagger UI reconhece multipart/form-data
   params: z.object({
-    doctorId: z.string(),
-  }),
-  body: z.object({
-    file: z.instanceof(Buffer, { message: 'O arquivo enviado deve ser válido' }),
+    doctorId: z.string(), // Valida apenas o ID do médico
   }),
   response: {
     200: z.object({
@@ -34,16 +32,15 @@ export const uploadAvatarSchema = {
 export async function uploadAvatar(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .register(auth) // Protege a rota com autenticação
+    .register(auth)
     .post(
       '/doctors/:doctorId/avatar',
       {
-        schema: uploadAvatarSchema, // Usa o schema atualizado
+        schema: uploadAvatarSchema,
       },
       async (request, reply) => {
         const { doctorId } = request.params
 
-        // Verifica se o médico existe
         const doctor = await prisma.doctor.findUnique({
           where: { doctorId },
         })
@@ -52,24 +49,29 @@ export async function uploadAvatar(app: FastifyInstance) {
           return reply.status(404).send({ message: 'Médico não encontrado' })
         }
 
-        // Cria a pasta "uploads" se não existir
-        const uploadDir = join(__dirname, '../../../uploads')
+        // Caminho absoluto para a pasta de uploads
+        const uploadDir = join(__dirname, '/uploads')
+        console.log(`Pasta de uploads configurada na rota: ${uploadDir}`)
 
+        // Cria a pasta "uploads" se não existir
         if (!existsSync(uploadDir)) {
           mkdirSync(uploadDir)
+          console.log('Pasta de uploads criada com sucesso!')
         }
 
-        // Processamento do arquivo
+        // Processa o arquivo enviado
         const data = await request.file()
         if (!data) {
           return reply.status(400).send({ message: 'Nenhum arquivo enviado' })
         }
 
-        // Definir nome e caminho da foto
+        // Define o nome e o caminho do arquivo
         const filename = `${doctorId}-${Date.now()}-${data.filename}`
         const filepath = join(uploadDir, filename)
 
-        // Salvar arquivo
+        console.log(`Salvando arquivo em: ${filepath}`)
+
+        // salvar arquivo
         await new Promise<void>((resolve, reject) => {
           const fileStream = createWriteStream(filepath)
           data.file.pipe(fileStream)
@@ -77,17 +79,26 @@ export async function uploadAvatar(app: FastifyInstance) {
           data.file.on('error', reject)
         })
 
-        // Atualizar campo no banco
-        const avatarUrl = `/uploads/${filename}`
-        await prisma.doctor.update({
-          where: { doctorId },
-          data: { avatarUrl },
-        })
+        // Gera a URL completa para o avatar
+        const address = app.server.address()
+        if (address && typeof address === 'object' && 'port' in address) {
+          const avatarUrl = `${request.protocol}://${request.hostname}:${address.port}/uploads/${filename}`
+          console.log(`URL gerada: ${avatarUrl}`)
 
-        return reply.status(200).send({
-          message: 'Avatar atualizado com sucesso',
-          avatarUrl,
-        })
+          // Atualiza o campo no banco de dados
+          await prisma.doctor.update({
+            where: { doctorId },
+            data: { avatarUrl },
+          })
+
+          return reply.status(200).send({
+            message: 'Avatar atualizado com sucesso',
+            avatarUrl,
+          })
+        } else {
+          console.error('Não foi possível determinar a porta do servidor.')
+          throw new InternalServerError("Erro interno do servidor")
+        }
       },
     )
 }
