@@ -1,0 +1,11 @@
+version: '3'
+
+services: 
+  banco-projeto-portal-documentos:
+    image: bitnami/postgresql
+    ports:
+      - 4321:5432
+    environment:
+      - POSTGRESQL_USERNAME=master
+      - POSTGRESQL_PASSWORD=masteryi
+      - POSTGRESQL_DATABASE=dbteledoc
