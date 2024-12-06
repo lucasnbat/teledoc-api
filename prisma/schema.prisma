@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   userId    String @id @default(cuid()) @map("user_id")
-  userName  String @map("user_name")
+  userName  String @map("user_name") 
   userPhone String @map("user_phone")
   userEmail String @unique @map("user_email")
 
@@ -23,4 +23,18 @@ model User {
   updatedAt DateTime @map("updated_at")
 
   @@map("users")
+}
+
+model Doctor {
+  doctorId          String @id @default(cuid()) @map("doctor_id")
+  doctorName        String @map("doctor_name")
+  doctorPhone       String @map("doctor_phone")
+  doctorEmail       String @unique @map("doctor_email")
+  numberOfPatients  Int    @map("number_patients")
+  rating            Float  @map("rating")
+  yearsOfExperience Int    @map("years_experience")
+  periodOfWork      String @map("period_work")
+  about             String @map("about")
+
+  @@map("doctors")
 }
