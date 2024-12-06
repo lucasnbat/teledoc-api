@@ -6,6 +6,7 @@ import fastifyCors from "@fastify/cors"
 import { errorHandler } from "./http/error-handler"
 import { env } from "./env"
 import fastifyJwt from "@fastify/jwt"
+import { createNewAccount } from "./http/routes/patients/create-new-account"
 
 export function buildApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -46,6 +47,10 @@ export function buildApp() {
   })
 
   app.register(fastifyCors)
+
+  // Pacientes
+
+  app.register(createNewAccount)
 
   return app
 }

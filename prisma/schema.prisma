@@ -14,27 +14,32 @@ datasource db {
 }
 
 model Patient {
-  patientId    String @id @default(cuid()) @map("patient_id")
-  patientName  String @map("patient_name")
-  patientPhone String @map("patient_phone")
-  patientEmail String @unique @map("patient_email")
+  patientId       String @id @default(cuid()) @map("patient_id")
+  patientName     String @map("patient_name")
+  patientPhone    String @map("patient_phone")
+  patientEmail    String @unique @map("patient_email")
+  patientPassword String @map("patient_password")
 
-  createdAt DateTime @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("patients")
 }
 
 model Doctor {
-  doctorId          String @id @default(cuid()) @map("doctor_id")
-  doctorName        String @map("doctor_name")
-  doctorPhone       String @map("doctor_phone")
-  doctorEmail       String @unique @map("doctor_email")
-  numberOfPatients  Int    @map("number_patients")
-  rating            Float  @map("rating")
-  yearsOfExperience Int    @map("years_experience")
-  periodOfWork      String @map("period_work")
-  about             String @map("about")
+  doctorId          String  @id @default(cuid()) @map("doctor_id")
+  doctorName        String  @map("doctor_name")
+  doctorPhone       String  @map("doctor_phone")
+  doctorEmail       String  @unique @map("doctor_email")
+  numberOfPatients  Int     @map("number_patients")
+  rating            Float   @map("rating")
+  yearsOfExperience Int     @map("years_experience")
+  periodOfWork      String  @map("period_work")
+  about             String  @map("about")
+  avatarUrl         String? @map("avatar_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("doctors")
 }
