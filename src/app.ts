@@ -7,7 +7,7 @@ import { errorHandler } from "./http/error-handler"
 import { env } from "./env"
 import fastifyJwt from "@fastify/jwt"
 import { createNewAccount } from "./http/routes/patients/create-new-account"
-import { authenticateWithPassword } from "./http/routes/auth/authenticate-with-password"
+import { authenticateWithPassword } from "./http/routes/patients/authenticate-with-password"
 
 export function buildApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
