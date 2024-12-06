@@ -13,6 +13,10 @@ import { getDoctor } from "./http/routes/doctors/get-doctor"
 import { getPatientProfile } from "./http/routes/patients/get-patient-profile"
 import { requestPasswordRecover } from "./http/routes/patients/request-password-recover"
 import { resetPassword } from "./http/routes/patients/reset-password"
+import fastifyMultipart from "@fastify/multipart"
+import { uploadAvatar } from "./http/routes/doctors/upload-avatar"
+import fastifyStatic from "@fastify/static"
+import { join } from "path"
 
 export function buildApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -27,6 +31,17 @@ export function buildApp() {
 
   app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
+  })
+
+  app.register(fastifyMultipart, {
+    limits: {
+      fileSize: 5 * 1024 * 1024, // Limita os uploads a 5MB
+    },
+  })
+
+  app.register(fastifyStatic, {
+    root: join(__dirname, '../uploads'),
+    prefix: '/uploads/', // Todas as imagens estarão acessíveis em "/uploads/"
   })
 
   app.register(fastifySwagger, {
@@ -64,6 +79,7 @@ export function buildApp() {
   // Médicos
   app.register(getDoctors)
   app.register(getDoctor)
+  app.register(uploadAvatar)
 
   return app
 }
