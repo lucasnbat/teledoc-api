@@ -10,6 +10,7 @@ import { createNewAccount } from "./http/routes/patients/create-new-account"
 import { authenticateWithPassword } from "./http/routes/patients/authenticate-with-password"
 import { getDoctors } from "./http/routes/doctors/get-doctors"
 import { getDoctor } from "./http/routes/doctors/get-doctor"
+import { getPatientProfile } from "./http/routes/patients/get-patient-profile"
 
 export function buildApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -54,6 +55,7 @@ export function buildApp() {
   // Pacientes
   app.register(createNewAccount)
   app.register(authenticateWithPassword)
+  app.register(getPatientProfile)
 
   // Médicos
   app.register(getDoctors)
