@@ -7,10 +7,6 @@ import { prisma } from '@/lib/prisma'
 
 import { BadRequestError } from '../_errors/bad-request-error'
 
-const createUserBodySchema = z.object({
-
-})
-
 export async function createNewAccount(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/patients',
