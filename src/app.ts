@@ -8,6 +8,7 @@ import { env } from "./env"
 import fastifyJwt from "@fastify/jwt"
 import { createNewAccount } from "./http/routes/patients/create-new-account"
 import { authenticateWithPassword } from "./http/routes/patients/authenticate-with-password"
+import { getDoctors } from "./http/routes/doctors/get-doctors"
 
 export function buildApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -17,6 +18,12 @@ export function buildApp() {
   app.setValidatorCompiler(validatorCompiler)
 
   app.setErrorHandler(errorHandler)
+
+  app.register(fastifyCors)
+
+  app.register(fastifyJwt, {
+    secret: env.JWT_SECRET,
+  })
 
   app.register(fastifySwagger, {
     openapi: {
@@ -43,16 +50,12 @@ export function buildApp() {
     routePrefix: '/docs'
   })
 
-  app.register(fastifyJwt, {
-    secret: env.JWT_SECRET,
-  })
-
-  app.register(fastifyCors)
-
   // Pacientes
-
   app.register(createNewAccount)
   app.register(authenticateWithPassword)
+
+  // Médicos
+  app.register(getDoctors)
 
   return app
 }
