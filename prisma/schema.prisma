@@ -22,6 +22,7 @@ model Patient {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")
+  Token     Token[]
 
   @@map("patients")
 }
@@ -42,4 +43,19 @@ model Doctor {
   updatedAt DateTime @default(now()) @map("updated_at")
 
   @@map("doctors")
+}
+
+enum TokenType {
+  PASSWORD_RECOVER
+}
+
+model Token {
+  id        String    @id @default(uuid())
+  type      TokenType
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  patient     Patient @relation(fields: [patientIdFk], references: [patientId])
+  patientIdFk String
+
+  @@map("tokens")
 }
