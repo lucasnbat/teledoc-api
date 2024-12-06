@@ -12,7 +12,7 @@ export async function createNewAccount(app: FastifyInstance) {
     '/patients',
     {
       schema: {
-        tags: ['autenticação'], // agregador de rotas pra swagger
+        tags: ['pacientes'], // agregador de rotas pra swagger
         summary: 'Crie uma nova conta de paciente', // descrição para swagger
         body: z.object({
           patientName: z.string(),
