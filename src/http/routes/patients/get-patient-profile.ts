@@ -16,6 +16,7 @@ export async function getPatientProfile(app: FastifyInstance) {
         response: {
           200: z.object({
             patientFinded: z.object({
+              patientId: z.string().cuid(),
               patientName: z.string().nullable(),
               patientEmail: z.string().email(),
               patientPhone: z.string(),
@@ -29,6 +30,7 @@ export async function getPatientProfile(app: FastifyInstance) {
 
       const patientFinded = await prisma.patient.findUnique({
         select: {
+          patientId: true,
           patientName: true,
           patientEmail: true,
           patientPhone: true,
