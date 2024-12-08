@@ -14,12 +14,13 @@ export async function getPatientProfile(app: FastifyInstance) {
         summary: 'Busca dados do paciente logado (perfil)',
         security: [{ bearerAuth: [] }], // para pedir token ao fazer req.
         response: {
-          // 200: z.object({
-          //   userFinded: z.object({
-          //     userName: z.string().nullable(),
-          //     userEmail: z.string().email(),
-          //   })
-          // })
+          200: z.object({
+            patientFinded: z.object({
+              patientName: z.string().nullable(),
+              patientEmail: z.string().email(),
+              patientPhone: z.string(),
+            })
+          })
         }
       }
     },
