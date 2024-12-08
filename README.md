@@ -27,3 +27,4 @@
 * Entre na pasta principal do projeto (`teledoc-front/`);
 * Execute `npm install` para instalar todas as dependências;
 * Feito isso, execute o comando `npm run start:dev` e acesse `http://localhost:3000`;
+* Vídeo demonstração: `video-demonstracao.mkv`.
