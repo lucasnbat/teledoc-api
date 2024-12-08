@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start:dev": "tsx watch src/server.ts"
+    "start:dev": "tsx watch src/server.ts",
+    "seed": "npx ts-node src/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.1",
     "prisma": "^6.0.1",
+    "ts-node": "^10.9.2",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
