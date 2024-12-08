@@ -19,6 +19,7 @@ export async function getDoctors(app: FastifyInstance) {
             200: z.object({
               doctors: z.array(
                 z.object({
+                  doctorId: z.string().cuid(),
                   doctorName: z.string(),
                   doctorPhone: z.string(),
                   doctorEmail: z.string().email(),
@@ -39,6 +40,7 @@ export async function getDoctors(app: FastifyInstance) {
 
         const doctors = await prisma.doctor.findMany({
           select: {
+            doctorId: true,
             doctorName: true,
             doctorEmail: true,
             about: true,
