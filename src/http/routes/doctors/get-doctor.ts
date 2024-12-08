@@ -31,6 +31,7 @@ export async function getDoctor(app: FastifyInstance) {
                 periodOfWork: z.string(),
                 about: z.string(),
                 avatarUrl: z.string().nullable(),
+                speciality: z.string().nullable(),
               })
             }),
           },
@@ -55,6 +56,7 @@ export async function getDoctor(app: FastifyInstance) {
             periodOfWork: true,
             about: true,
             avatarUrl: true,
+            speciality: true,
           }
         })
 

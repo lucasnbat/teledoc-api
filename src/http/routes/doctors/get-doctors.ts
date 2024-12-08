@@ -29,6 +29,7 @@ export async function getDoctors(app: FastifyInstance) {
                   periodOfWork: z.string(),
                   about: z.string(),
                   avatarUrl: z.string().nullable(),
+                  speciality: z.string().nullable(),
                 })
               ),
             }),
@@ -50,6 +51,7 @@ export async function getDoctors(app: FastifyInstance) {
             periodOfWork: true,
             rating: true,
             yearsOfExperience: true,
+            speciality: true,
           }
         })
 
