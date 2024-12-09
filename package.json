@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
-    "seed": "npx ts-node src/seed.ts"
+    "seed": "npx ts-node src/seed.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -27,10 +29,14 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.1",
+    "@types/supertest": "^6.0.2",
+    "@vitest/ui": "^2.1.8",
     "prisma": "^6.0.1",
+    "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   }
 }
